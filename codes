@@ -1,0 +1,241 @@
+Experiment 1: Controlling LED ON/OFF with Arduino/ESP32/Raspberry Pi
+
+Program:
+void setup() {
+pinMode(13, OUTPUT); // sets the digital pin 13 as output
+}
+void loop() {
+digitalWrite(13, HIGH); // sets the digital pin 13 on
+delay(1000); // waits for a second
+digitalWrite(13, LOW); // sets the digital pin 13 off
+delay(1000); // waits for a second
+
+----------------------------------------------------------------------------
+Experiment 2: Implementation of Automated Street Lighting System using LDR with Arduino/ESP32/Raspberry Pi
+Program :
+int ldr=A0;//Set A0(Analog Input) for LDR.
+int value=0;
+void setup() {
+Serial.begin(9600); pinMode(3,OUTPUT);
+}
+void loop() {
+value=analogRead(ldr);//Reads the Value of LDR(light).
+Serial.println("LDR value is :");//Prints the value of LDR to Serial Monitor.
+Serial.println(value);
+if(value<300)
+{
+digitalWrite(3,HIGH);//Makes the LED glow in Dark.
+}
+else
+{
+digitalWrite(3,LOW);//Turns the LED OFF in Light.
+}
+}
+----------------------------------------------------------------------------------
+Experiment 3 : Monitoring the voltage level of the battery and indicating the same using
+multiple LED's & OLED with Arduino/ESP32/Raspberry Pi.
+Program:
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define OLED_RESET 4
+Adafruit_SSD1306 display(OLED_RESET);
+int greenLed = 2;
+int yellowLed = 3;
+int redLed = 4;
+int analogValue = 0;
+float voltage = 0;
+int ledDelay = 1000;
+void setup()
+{
+display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+display.display();
+display.clearDisplay();
+Serial.begin(9600);
+pinMode(greenLed, OUTPUT);
+pinMode(yellow Led, OUTPUT);
+pinMode(redLed,OUTPUT);
+}
+void loop()
+{
+analogValue = analogRead(A0);
+voltage = 0.0048*analogValue;
+display.setTextSize(1);
+display.setTextColor(WHITE);
+display.setCursor(0,0);
+display.println(" Battery Voltage");
+display.println("");
+display.println("");
+display.setTextSize(3);
+display.print(" ");
+display.println(voltage);
+display.display();
+delay (200);
+35
+display.clear Display();
+Serial.println(voltage);
+if( voltage >= 1.35 )
+digitalWrite(greenLed, HIGH);
+else if (voltage > 1.2 && voltage < 1.35)
+digitalWrite(yellowLed, HIGH);
+else if( voltage <= 1.2)
+digitalWrite(redLed, HIGH);
+delay(ledDelay);
+digitalWrite(redLed, LOW);
+digitalWrite(yellowLed, LOW);
+digitalWrite(greenLed, LOW);
+}
+
+
+-------------------------------------------------------------------------------------
+
+
+Experiment 4: Generatation of a random value similar to dice game and display the same using a 16X2 LCD with Arduino/ESP32/Raspberry Pi
+Program:
+#include <LiquidCrystal.h> LiquidCrystal lcd(12, 11, 5, 4, 3, 2); int randomnumber;
+void setup()
+{ // put your setup code here, to run once: lcd.begin(16, 2);
+randomSeed(7); pinMode(8, INPUT);
+}
+void loop()
+{
+lcd.setCursor(2, 0); lcd.print("Dice value is:");
+int DICEROLL = digitalRead(8); if(DICEROLL==1)
+randomnumber = random(1,7); lcd.setCursor(6, 1); lcd.print(randomnumber);
+}
+
+
+------------------------------------------------------------------------------------
+
+Experiment 5: Print temperature and humidity using DHT22 sensor with Raspberry Pi /Arduino/ESP32
+Program:
+#include <DHT.h>
+// Define the DHT sensor type and pin
+#define DHTPIN 8 // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT22 // DHT 22 (AM2302)
+DHT dht(DHTPIN, DHTTYPE);
+void setup() {
+Serial.begin(9600);
+Serial.println("DHT22 Temperature and Humidity Sensor");
+dht.begin();
+}
+void loop() {
+// Delay between readings (adjust as needed)
+delay(2000);
+// Read temperature and humidity
+float humidity = dht.readHumidity();
+float temperature = dht.readTemperature();
+// Print the readings to the serial monitor
+Serial.print("Temperature: ");
+Serial.print(temperature);
+Serial.print(" *C");
+Serial.print(" Humidity: ");
+Serial.print(humidity);
+Serial.println(" %");
+}
+
+
+----------------------------------------------------------------------------------------
+
+
+Experiment 6: Controlling of PIR based LED ON/OFF
+
+
+Program:
+import RPi.GPIO as GPIO import time
+GPIO.setwarnings(False) GPIO.setmode(GPIO.BOARD)
+GPIO.setup(11, GPIO.IN) #Read ouput from PIR motion sensor
+GPIO.setup(3, GPIO.OUT) #LED output pin
+50
+While True:
+i=GPIO.input(11)
+if i == 0: #When output from motion sensor is LOW print (“No Person detected”,i)
+GPIO.output(3,0) time.sleep(0.1)
+elif i == 1: #When output from motion sensor is HIGH print (“A Person is detected”,i)
+GPIO.output(3,1) #Turn ON LED time.sleep(0.1)
+
+-----------------------------------------------------------------------------------------
+Experiment 7: Implementation of Traffic Light system with Raspberry Pi
+
+
+Program:
+import RPi.GPIO as GPIO import time GPIO.setmode(GPIO.BCM)
+GPIO.setup(2,GPIO.OUT) GPIO.setup(3,GPIO.OUT) GPIO.setup(4,GPIO.OUT)
+GPIO.setup(17,GPIO.OUT) GPIO.setup(27,GPIO.OUT) GPIO.setup(22,GPIO.OUT)
+GPIO.setup(10,GPIO.OUT) GPIO.setup(9,GPIO.OUT) GPIO.setup(11,GPIO.OUT)
+GPIO.setup(13,GPIO.OUT) GPIO.setup(6,GPIO.OUT) GPIO.setup(5,GPIO.OUT)
+while True:
+GPIO.output(2,False) GPIO.output(3,False) GPIO.output(4,False)
+GPIO.output(17,False) GPIO.output(27,False) GPIO.output(22,False)
+GPIO.output(10,False) GPIO.output(9,False) GPIO.output(11,False)
+GPIO.output(5,False) GPIO.output(6,False) GPIO.output(13,False) time.sleep(2)
+55
+print(" Green Signal for Lane 2 & Lane 4 & Red signal for Lane 1 & Lane 3")
+GPIO.output(2,True) GPIO.output(10,True) GPIO.output(13,True) GPIO.output(22,True) time.sleep(8)
+print(" Yellow Signal for Lane 2 & Lane 4" )
+GPIO.output(2,False) GPIO.output(10,False) GPIO.output(13,False) GPIO.output(22,False) GPIO.output(27,True) GPIO.output(6,True) time.sleep(6)
+print(" Green Signal for Lane 1 & Lane 3 & Red signal for Lane 2 & Lane 4") GPIO.output(27,False)
+GPIO.output(6,False) GPIO.output(17,True) GPIO.output(5,True) GPIO.output(4,True) GPIO.output(11,True) time.sleep(8)
+print(" Yellow Signal for Lane 1 & Lane 3" ) GPIO.output(17,False)
+GPIO.output(5,False) GPIO.output(4,False) GPIO.output(11,False) GPIO.output(9,True) GPIO.output(3,True) time.sleep(4)
+
+
+--------------------------------------
+Experiment 8: Measure the distance using Ultra sonic sensor
+
+
+
+Program:
+#Libraries
+import RPi.GPIO as GPIO import time
+#GPIOMode(BOARD/ BCM)
+GPIO.setmode(GPIO.BCM)
+#set GPIO Pins GPIO_TRIGGER=18 GPIO_ECHO=24
+#set GPIO direction (IN / OUT) GPIO.setup(GPIO_TRIGGER,GPIO.OUT) GPIO.setup(GPIO_ECHO,GPIO.IN)
+def distance():
+62
+# set Trigger to HIGH GPIO.output(GPIO_TRIGGER,True)
+# set Trigger after 0.01ms to LOW time.sleep(0.00001)
+GPIO.output(GPIO_TRIGGER,False)
+StartTime = time.time() StopTime=time.time()
+# save StartTime
+while GPIO.input(GPIO_ECHO) == 0: StartTime=time.time()
+# save time of arrival
+while GPIO.input(GPIO_ECHO) == 1: StopTime=time.time()
+# time difference between start and arrival TimeElapsed=StopTime-StartTime #multiply with the sonicspeed(34300cm/s) #and divide by2, because there and back
+distance = (TimeElapsed * 34300) / 2
+return distance
+if __name__== '__main__':
+try:
+while True:
+dist=distance()
+print ("Measured Distance = %.1f cm" % dist) time.sleep(1)
+# Reset by pressing CTRL + C
+except KeyboardInterrupt:
+print("Measurement stopped by User")
+GPIO.cleanup()
+
+
+
+------------------------------------------------------------------------------------
+Experiment 9: Perform image capture, read, write, and modify the image operation using Pi camera with Raspberry Pi
+
+Program:
+#capture the image
+from picamera import PiCamera from time import sleep
+camera = PiCamera() camera.rotation = 180 camera.start_preview() sleep(5) camera.stop_preview()
+#modify the image
+from picamera import PiCamera from time import sleep
+from picamera import PiCamera, Color
+camera = PiCamera() camera.rotation = 180 camera.start_preview() camera.image_effect = 'watercolor'
+camera.annotate_background = Color('yellow') camera.annotate_foreground = Color('blue') camera.annotate_text_size = 80 camera.annotate_text = "Hello KMIT"
+for i in range(5): sleep(5)
+camera.capture('/home/pi/Desktop/Rasp1%s.jpg' % i) camera.stop_preview()
+#video
+from picamera import PiCamera from time import sleep
+from picamera import PiCamera, Color
+camera = PiCamera() camera.rotation = 180 camera.start_preview()
+67
+camera.start_preview() camera.annotate_background = Color('yellow') camera.annotate_foreground = Color('blue') camera.annotate_text_size = 80
+camera.annotate_text = " KMIT IT " camera.start_recording('/home/pi/Desktop/video.h264') sleep(5)
+camera.stop_recording() camera.stop_preview()
